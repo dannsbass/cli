@@ -34,8 +34,27 @@ if(isset($argv[1])){
         ]
     ];
     $context = stream_context_create($context);
-    $hasil = file_get_contents($url, false, $context);
-    echo $hasil;
+    $json = file_get_contents($url, false, $context);
+    $array = json_decode($json,true);
+    if($array['data']!=null){
+        $data = $array['data'];
+        $hasil = '';
+        foreach($data as $key=>$d){
+            $kitab = $data[$key]['kitab'];
+            $id = $data[$key]['id'];
+            $no = '';
+            foreach($id as $k=>$i){
+                $no .= $i;
+                if(count($id)>($k+1)){
+                    $no .= ', ';
+                }
+            }
+            $hasil .= $kitab.': '.$no."\n";
+        }
+        echo $hasil;
+        #print(json_encode($data,JSON_PRETTY_PRINT));
+    }
+    
     
 }else{
     $file = basename(__FILE__);
