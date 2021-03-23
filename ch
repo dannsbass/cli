@@ -21,7 +21,10 @@ if(isset($argv[1])){
         $kitab = $cocok[1];
         $id = $cocok[2];
         $url = "http://api.carihadis.com/?kitab=$kitab&id=$id";
-        $json = json_decode(file_get_contents($url),true);
+        $konten = file_get_contents($url);
+        $json = json_decode($konten,true);
+        $data = $json['data'];
+        if(count($data)<1) exit("Maaf, tidak ditemukan. Periksa kembali nama kitab dan nomor hadis".PHP_EOL);
         $data = $json['data']['1'];
         #$id = $data['id'];
         $nass = $data['nass'];
