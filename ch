@@ -56,7 +56,7 @@ if(isset($argv[1])){
     }
     # if data is null
     else{
-        echo "Maaf, tidak ditemukan ".$merah.$argv[1].$putih.PHP_EOL;
+        echo "Maaf, tidak ditemukan ".$merah.$katakunci.$putih.PHP_EOL;
     }
     
     
