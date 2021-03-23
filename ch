@@ -54,14 +54,23 @@ if(isset($argv[1])){
         echo $hasil;
         #print(json_encode($data,JSON_PRETTY_PRINT));
     }
+    # if data is null
+    else{
+        echo "Maaf, tidak ditemukan ".$merah.$argv[1].$putih.PHP_EOL;
+    }
     
     
 }else{
     $file = basename(__FILE__);
-	echo $biru."Keterangan:{$putih}
+	echo $hijau.explode('__halt_compiler();',file_get_contents(__FILE__))[2].$biru."Keterangan:{$putih}
     1. Pastikan permission file ini sudah diubah menjadi executable dengan perintah {$hijau}chmod +x ".$file."{$putih} kemudian diletakkan di direktori PATH (cek direktori PATH dengan perintah {$hijau}echo \$PATH{$putih}).
-    2. Cara menggunakan file ini, cukup ketik perintah {$hijau}".$file." {$kuning}[kata kunci]{$putih}. Contoh:
-	{$hijau}".$file." {$kuning} puasa ramadhan{$putih}".PHP_EOL;
+    2. Cara menggunakan file ini, cukup ketik perintah {$hijau}".$file." {$kuning}[kata kunci]{$putih}. Contoh: {$hijau}".$file." {$kuning} puasa ramadhan{$putih}".PHP_EOL.PHP_EOL;
 }
 
+__halt_compiler();
+  ____           _ _   _           _ _
+ / ___|__ _ _ __(_) | | | __ _  __| (_)___
+| |   / _` | '__| | |_| |/ _` |/ _` | / __|
+| |__| (_| | |  | |  _  | (_| | (_| | \__ \
+ \____\__,_|_|  |_|_| |_|\__,_|\__,_|_|___/
 
