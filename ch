@@ -14,6 +14,21 @@ $biru="\033[0;34m";
 $kuning="\033[0;33m";
 
 if(isset($argv[1])){
+    
+    # Shahi_Bukhari:123
+    if(count($argv)===2 and preg_match('/([a-zA-Z_]+)\:(\d+)/',$argv[1],$cocok)){
+        #var_dump($cocok);
+        $kitab = $cocok[1];
+        $id = $cocok[2];
+        $url = "http://api.carihadis.com/?kitab=$kitab&id=$id";
+        $json = json_decode(file_get_contents($url),true);
+        $data = $json['data']['1'];
+        #$id = $data['id'];
+        $nass = $data['nass'];
+        $terjemah = $data['terjemah'];
+        return print $kitab.': '.$id.PHP_EOL.$nass.PHP_EOL.$terjemah.PHP_EOL;
+    }
+    
     if(count($argv)>2){
         array_shift($argv);
         $katakunci = implode(' ',$argv);
@@ -22,18 +37,16 @@ if(isset($argv[1])){
     }
     
     $url = "http://api.carihadis.com";
-    $data = [
+    $data = http_build_query([
         'q'=>$katakunci
-    ];
-    $data = http_build_query($data);
-    $context = [
+    ]);
+    $context = stream_context_create([
         'http'=>[
             'method'=>'POST',
             'header'=>'Content-Type:application/x-www-form-urlencoded',
             'content'=>$data
         ]
-    ];
-    $context = stream_context_create($context);
+    ]);
     $json = file_get_contents($url, false, $context);
     $array = json_decode($json,true);
     if($array['data']!=null){
