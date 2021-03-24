@@ -29,6 +29,8 @@ if(isset($argv[1])){
         #$id = $data['id'];
         $nass = $data['nass'];
         $terjemah = $data['terjemah'];
+        $terjemah = br2nl($terjemah);
+        $terjemah = strip_tags($terjemah);
         return print $kitab.': '.$id.PHP_EOL.$nass.PHP_EOL.$terjemah.PHP_EOL;
     }
     
@@ -40,17 +42,29 @@ if(isset($argv[1])){
     }
     
     $url = "http://api.carihadis.com";
-    $data = http_build_query([
+    $data = [
         'q'=>$katakunci
-    ]);
-    $context = stream_context_create([
-        'http'=>[
-            'method'=>'POST',
-            'header'=>'Content-Type:application/x-www-form-urlencoded',
-            'content'=>$data
-        ]
-    ]);
-    $json = file_get_contents($url, false, $context);
+    ];
+    if(function_exists('curl_init')){
+        $ch = curl_init();
+        curl_setopt_array($ch,[
+            CURLOPT_URL=>$url,
+            CURLOPT_RETURNTRANSFER=>true,
+            CURLOPT_POSTFIELDS=>$data
+            ]);
+        $json = curl_exec($ch);
+        curl_close($ch);
+    }else{
+        $data = http_build_query($data);
+        $context = stream_context_create([
+            'http'=>[
+                'method'=>'POST',
+                'header'=>'Content-Type:application/x-www-form-urlencoded',
+                'content'=>$data
+            ]
+        ]);
+        $json = file_get_contents($url, false, $context);
+    }
     $array = json_decode($json,true);
     if($array['data']!=null){
         $data = $array['data'];
@@ -81,6 +95,10 @@ if(isset($argv[1])){
 	echo $hijau.explode('__halt_compiler();',file_get_contents(__FILE__))[2].$biru."Keterangan:{$putih}
     1. Pastikan permission file ini sudah diubah menjadi executable dengan perintah {$hijau}chmod +x ".$file."{$putih} kemudian diletakkan di direktori PATH (cek direktori PATH dengan perintah {$hijau}echo \$PATH{$putih}).
     2. Cara menggunakan file ini, cukup ketik perintah {$hijau}".$file." {$kuning}[kata kunci]{$putih}. Contoh: {$hijau}".$file." {$kuning} puasa ramadhan{$putih}".PHP_EOL.PHP_EOL;
+}
+
+function br2nl( $input ) {
+    return preg_replace('/<br\s?\/?>|<p\s?([^\>]+)\>/ius', "\n", str_replace("\n\n","",str_replace("\r","", htmlspecialchars_decode($input))));
 }
 
 __halt_compiler();
