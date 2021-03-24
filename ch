@@ -40,8 +40,7 @@ if(isset($argv[1])){
         #$id = $data['id'];
         $nass = $data['nass'];
         $terjemah = $data['terjemah'];
-        $terjemah = br2nl($terjemah);
-        $terjemah = strip_tags($terjemah);
+        $terjemah = str_ireplace('&nbsp;','',strip_tags(br2nl($terjemah)));
         return print $kitab.': '.$id.PHP_EOL.$nass.PHP_EOL.$terjemah.PHP_EOL;
     }
     
