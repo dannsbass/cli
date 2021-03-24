@@ -102,7 +102,16 @@ if(isset($argv[1])){
     
 }else{
     $file = basename(__FILE__);
-	echo $hijau.explode('__halt_compiler();',file_get_contents(__FILE__))[2].$biru."Keterangan:{$putih}
+	
+	
+	$logo = explode('__halt_compiler();',file_get_contents(__FILE__))[2];
+	system('clear');
+	foreach(explode("\n",$logo) as $a){
+	    echo $hijau.$a."\n";
+	    sleep(1);
+	}
+	
+	echo $biru."Keterangan:{$putih}
     1. Pastikan permission file ini sudah diubah menjadi executable dengan perintah {$hijau}chmod +x ".$file."{$putih} kemudian diletakkan di direktori PATH (cek direktori PATH dengan perintah {$hijau}echo \$PATH{$putih}).
     2. Cara menggunakan file ini, cukup ketik perintah {$hijau}".$file." {$kuning}[kata kunci]{$putih}. Contoh: {$hijau}".$file." {$kuning} puasa ramadhan{$putih}".PHP_EOL.PHP_EOL;
 }
