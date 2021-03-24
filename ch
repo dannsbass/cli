@@ -21,7 +21,18 @@ if(isset($argv[1])){
         $kitab = $cocok[1];
         $id = $cocok[2];
         $url = "http://api.carihadis.com/?kitab=$kitab&id=$id";
-        $konten = file_get_contents($url);
+        if(function_exists('curl_version')){
+            $ch = curl_init();
+            curl_setopt_array($ch,[
+                CURLOPT_URL=>$url,
+                CURLOPT_RETURNTRANSFER=>true
+                ]);
+            $konten = curl_exec($ch);
+            curl_close($ch);
+        }else{
+            $konten = file_get_contents($url);
+        }
+        if($konten === false)exit($merah."Eror, coba cek koneksi internet anda\n");
         $json = json_decode($konten,true);
         $data = $json['data'];
         if(count($data)<1) exit("Maaf, tidak ditemukan. Periksa kembali nama kitab dan nomor hadis".PHP_EOL);
@@ -45,7 +56,7 @@ if(isset($argv[1])){
     $data = [
         'q'=>$katakunci
     ];
-    if(function_exists('curl_init')){
+    if(function_exists('curl_version')){
         $ch = curl_init();
         curl_setopt_array($ch,[
             CURLOPT_URL=>$url,
