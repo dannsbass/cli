@@ -41,7 +41,9 @@ if(isset($argv[1])){
         $nass = $data['nass'];
         $terjemah = $data['terjemah'];
         $terjemah = str_ireplace('&nbsp;','',strip_tags(br2nl($terjemah)));
-        return print $kitab.': '.$id.PHP_EOL.$nass.PHP_EOL.$terjemah.PHP_EOL;
+        $terjemah = str_ireplace('[',$kuning,$terjemah);
+        $terjemah = str_ireplace(']',$birumuda,$terjemah);
+        return print $biru.$kitab.': '.$kuning.$id.PHP_EOL.$hijau.$nass.PHP_EOL.$birumuda.$terjemah.PHP_EOL;
     }
     
     if(count($argv)>2){
@@ -89,7 +91,7 @@ if(isset($argv[1])){
                     $no .= ', ';
                 }
             }
-            $hasil .= $kitab.': '.$no."\n";
+            $hasil .= $biru.$kitab.': '.$kuning.$no."\n";
         }
         echo $hasil;
         #print(json_encode($data,JSON_PRETTY_PRINT));
@@ -102,15 +104,12 @@ if(isset($argv[1])){
     
 }else{
     $file = basename(__FILE__);
-	
-	
 	$logo = explode('__halt_compiler();',file_get_contents(__FILE__))[2];
 	system('clear');
 	foreach(explode("\n",$logo) as $a){
 	    echo $hijau.$a."\n";
 	    sleep(1);
 	}
-	
 	echo $biru."Keterangan:{$putih}
     1. Pastikan permission file ini sudah diubah menjadi executable dengan perintah {$hijau}chmod +x ".$file."{$putih} kemudian diletakkan di direktori PATH (cek direktori PATH dengan perintah {$hijau}echo \$PATH{$putih}).
     2. Cara menggunakan file ini, cukup ketik perintah {$hijau}".$file." {$kuning}[kata kunci]{$putih}. Contoh: {$hijau}".$file." {$kuning} puasa ramadhan{$putih}".PHP_EOL.PHP_EOL;
@@ -126,4 +125,4 @@ __halt_compiler();
 | |   / _` | '__| | |_| |/ _` |/ _` | / __|
 | |__| (_| | |  | |  _  | (_| | (_| | \__ \
  \____\__,_|_|  |_|_| |_|\__,_|\__,_|_|___/
-
+ 
