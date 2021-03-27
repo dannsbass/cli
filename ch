@@ -88,9 +88,11 @@ if(isset($argv[1])){
         foreach($list_kitab as $k=>$lk){
             $tampil_kitab .= ($k+1).'. '.$lk."\n";
         }
-        $no_kitab = readline("Daftar nama kitab:\n{$biru}{$tampil_kitab}{$putih}Tulis nomor kitab: ");
-        $kitab = $list_kitab[$no_kitab-1];
-        $id = readline("{$putih}Nomor hadis: {$kuning}".implode(' ',$list_id[$no_kitab-1])."$putih\nTulis nomor hadis: ");
+        echo "Daftar nama kitab:\n{$biru}{$tampil_kitab}\n";
+        $no_kitab = validasi_no_kitab(count($list_kitab)) - 1;
+        $kitab = $list_kitab[$no_kitab];
+        echo "{$putih}Nomor hadis: {$kuning}".implode(' ',$list_id[$no_kitab])."\n";
+        $id = validasi_id($list_id[$no_kitab]);
         $url = "http://api.carihadis.com/?kitab=$kitab&id=$id";
             if(function_exists('curl_version')){
                 $ch = curl_init();
@@ -182,15 +184,33 @@ function br2nl( $input ) {
     return preg_replace('/<br\s?\/?>|<p\s?([^\>]+)\>/ius', "\n", str_replace("\n\n","",str_replace("\r","", htmlspecialchars_decode($input))));
 }
 
-function request($kitab,$id){
-    echo "Anda request kitab: $kitab\nid: $id\n";
-            
-            
-            
-            
-            
-            
-        }
+function validasi_id($list_id){
+    global $putih,$kuning,$merah;
+    $id = readline("{$putih}Tulis nomor hadis: ");
+    if(!is_numeric($id)){
+        echo $merah."Tulis angkanya\n";
+        $id = validasi_id($list_id);
+    }
+    if(!in_array($id,$list_id)){
+        echo $merah."Pilih salah satu nomor di atas\n";
+        $id = validasi_id($list_id);
+    }
+    return $id;
+}
+
+function validasi_no_kitab($jumlah_kitab){
+    global $biru,$putih,$tampil_kitab,$merah;
+    $no_kitab = readline("{$putih}Tulis nomor kitab: ");
+    if(!is_numeric($no_kitab)){
+        echo $merah."Tulis angkanya\n";
+        $no_kitab = validasi_no_kitab($jumlah_kitab);
+    }
+    if($no_kitab<1 or $no_kitab>$jumlah_kitab){
+        echo $merah."No kitab tidak valid\n";
+        $no_kitab = validasi_no_kitab($jumlah_kitab);
+    }
+    return $no_kitab;
+}
 
 __halt_compiler();
   ____           _ _   _           _ _
