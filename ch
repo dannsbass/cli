@@ -80,6 +80,48 @@ if(isset($argv[1])){
     $array = json_decode($json,true);
     if($array['data']!=null){
         $data = $array['data'];
+        foreach($data as $key=>$v){
+            $list_kitab[] = $data[$key]['kitab'];
+            $list_id[] = $data[$key]['id'];
+        }
+        $tampil_kitab ='';
+        foreach($list_kitab as $k=>$lk){
+            $tampil_kitab .= ($k+1).'. '.$lk."\n";
+        }
+        $no_kitab = readline($putih."Daftar nama kitab:\n".$biru.$tampil_kitab.$putih.'Tulis nomor kitab: ');
+        $kitab = $list_kitab[$no_kitab-1];
+        $id = readline($putih.'Nomor hadis: '.$kuning.implode(' ',$list_id[$no_kitab-1]).$putih."\nTulis nomor hadis: ");
+        $url = "http://api.carihadis.com/?kitab=$kitab&id=$id";
+            if(function_exists('curl_version')){
+                $ch = curl_init();
+                curl_setopt_array($ch,[
+                    CURLOPT_URL=>$url,
+                    CURLOPT_RETURNTRANSFER=>true
+                    ]);
+                $konten = curl_exec($ch);
+                curl_close($ch);
+            }else{
+                $konten = file_get_contents($url);
+            }
+            if($konten === false)exit($merah."Eror, coba cek koneksi internet anda\n");
+            $json = json_decode($konten,true);
+            $data = $json['data'];
+            if($data==null)exit('Null nih');
+            if(count($data)<1) exit("Maaf, tidak ditemukan. Periksa kembali nama kitab dan nomor hadis".PHP_EOL);
+            $data = $json['data']['1'];
+            #$id = $data['id'];
+            $nass = $data['nass'];
+            $terjemah = $data['terjemah'];
+            $terjemah = str_ireplace('&nbsp;','',strip_tags(br2nl($terjemah)));
+            $terjemah = str_ireplace('[',$kuning,$terjemah);
+            $terjemah = str_ireplace(']',$birumuda,$terjemah);
+            $terjemah = str_ireplace($katakunci,$merah.$katakunci.$birumuda,$terjemah);
+            return print $biru.$kitab.': '.$kuning.$id.PHP_EOL.$hijau.$nass.PHP_EOL.$birumuda.$terjemah.PHP_EOL;
+        
+    }
+    /*
+    if($array['data']!=null){
+        $data = $array['data'];
         $hasil = '';
         foreach($data as $key=>$d){
             $kitab = $data[$key]['kitab'];
@@ -95,7 +137,7 @@ if(isset($argv[1])){
         }
         echo $hasil;
         #print(json_encode($data,JSON_PRETTY_PRINT));
-    }
+    } */
     # if data is null
     else{
         echo "Maaf, tidak ditemukan ".$merah.$katakunci.$putih.PHP_EOL;
@@ -118,6 +160,16 @@ if(isset($argv[1])){
 function br2nl( $input ) {
     return preg_replace('/<br\s?\/?>|<p\s?([^\>]+)\>/ius', "\n", str_replace("\n\n","",str_replace("\r","", htmlspecialchars_decode($input))));
 }
+
+function request($kitab,$id){
+    echo "Anda request kitab: $kitab\nid: $id\n";
+            
+            
+            
+            
+            
+            
+        }
 
 __halt_compiler();
   ____           _ _   _           _ _
