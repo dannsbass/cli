@@ -163,14 +163,14 @@ if(isset($argv[1])){
     2. Cara menggunakan file ini, ketik perintah:
     
     $ch kata kunci {$putih}atau
-    $ch Nama_Kitab:Nomor_Hadis
+    $ch Nama_Kitab{$hijau}:{$kuning}No_Hadis
     
     {$putih}Contoh:
     
     $ch puasa ramadhan
-    $ch Shahih_Bukhari:123
+    $ch Shahih_Bukhari{$hijau}:{$kuning}123
     
-    Info: {$biru}www.carihadis.com
+    {$putih}Info: {$biru}www.carihadis.com
     
     ";
     
