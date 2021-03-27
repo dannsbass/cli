@@ -88,9 +88,9 @@ if(isset($argv[1])){
         foreach($list_kitab as $k=>$lk){
             $tampil_kitab .= ($k+1).'. '.$lk."\n";
         }
-        $no_kitab = readline($putih."Daftar nama kitab:\n".$biru.$tampil_kitab.$putih.'Tulis nomor kitab: ');
+        $no_kitab = readline("Daftar nama kitab:\n{$biru}{$tampil_kitab}{$putih}Tulis nomor kitab: ");
         $kitab = $list_kitab[$no_kitab-1];
-        $id = readline($putih.'Nomor hadis: '.$kuning.implode(' ',$list_id[$no_kitab-1]).$putih."\nTulis nomor hadis: ");
+        $id = readline("{$putih}Nomor hadis: {$kuning}".implode(' ',$list_id[$no_kitab-1])."$putih\nTulis nomor hadis: ");
         $url = "http://api.carihadis.com/?kitab=$kitab&id=$id";
             if(function_exists('curl_version')){
                 $ch = curl_init();
@@ -152,7 +152,7 @@ if(isset($argv[1])){
 	    echo $hijau.$a."\n";
 	    sleep(1);
 	}
-	echo $biru."Keterangan:{$putih}
+	echo $merah."  Versi 0.1\n".$biru."Keterangan:{$putih}
     1. Pastikan permission file ini sudah diubah menjadi executable dengan perintah {$hijau}chmod +x ".$file."{$putih} kemudian diletakkan di direktori PATH (cek direktori PATH dengan perintah {$hijau}echo \$PATH{$putih}).
     2. Cara menggunakan file ini, cukup ketik perintah {$hijau}".$file." {$kuning}[kata kunci]{$putih}. Contoh: {$hijau}".$file." {$kuning} puasa ramadhan{$putih}".PHP_EOL.PHP_EOL;
 }
@@ -177,4 +177,3 @@ __halt_compiler();
 | |   / _` | '__| | |_| |/ _` |/ _` | / __|
 | |__| (_| | |  | |  _  | (_| | (_| | \__ \
  \____\__,_|_|  |_|_| |_|\__,_|\__,_|_|___/
- 
