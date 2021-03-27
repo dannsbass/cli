@@ -118,7 +118,15 @@ if(isset($argv[1])){
             $terjemah = str_ireplace('[',$kuning,$terjemah);
             $terjemah = str_ireplace(']',$birumuda,$terjemah);
             $terjemah = str_ireplace($katakunci,$merah.$katakunci.$birumuda,$terjemah);
-            return print $biru.$kitab.': '.$kuning.$id.PHP_EOL.$hijau.$nass.PHP_EOL.$birumuda.$terjemah.PHP_EOL;
+            $hasil = "
+    {$biru}{$kitab}: {$kuning}{$id}
+    
+    {$hijau}{$nass}
+    
+    {$birumuda}{$terjemah}
+    
+    ";
+        return print $hasil;
         
     }
     /*
