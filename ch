@@ -152,9 +152,30 @@ if(isset($argv[1])){
 	    echo $hijau.$a."\n";
 	    sleep(1);
 	}
-	echo $merah."  Versi 0.1\n".$biru."Keterangan:{$putih}
-    1. Pastikan permission file ini sudah diubah menjadi executable dengan perintah {$hijau}chmod +x ".$file."{$putih} kemudian diletakkan di direktori PATH (cek direktori PATH dengan perintah {$hijau}echo \$PATH{$putih}).
-    2. Cara menggunakan file ini, cukup ketik perintah {$hijau}".$file." {$kuning}[kata kunci]{$putih}. Contoh: {$hijau}".$file." {$kuning} puasa ramadhan{$putih}".PHP_EOL.PHP_EOL;
+	$ch = "{$hijau}{$file}{$kuning}";
+	
+	$ket = "$merah  Versi 0.1
+
+	{$biru}Keterangan:{$putih}
+
+    1. Pastikan permission file ini sudah diubah menjadi executable dengan perintah {$hijau}chmod +x $file {$putih}kemudian letakkan file di direktori PATH (cek direktori PATH dengan perintah {$hijau}echo \$PATH{$putih}).
+    
+    2. Cara menggunakan file ini, ketik perintah:
+    
+    $ch kata kunci {$putih}atau
+    $ch Nama_Kitab:Nomor_Hadis
+    
+    {$putih}Contoh:
+    
+    $ch puasa ramadhan
+    $ch Shahih_Bukhari:123
+    
+    Info: {$biru}www.carihadis.com
+    
+    ";
+    
+    echo wordwrap($ket,50,"
+    ");
 }
 
 function br2nl( $input ) {
