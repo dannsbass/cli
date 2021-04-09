@@ -1,1 +1,1 @@
-untuk file-file yang bisa dieksekusi langsung
+untuk file-file yang berjalan di CLI
