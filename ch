@@ -57,26 +57,7 @@ if(isset($argv[1])){
     $data = [
         'q'=>$katakunci
     ];
-    if(function_exists('curl_version')){
-        $ch = curl_init();
-        curl_setopt_array($ch,[
-            CURLOPT_URL=>$url,
-            CURLOPT_RETURNTRANSFER=>true,
-            CURLOPT_POSTFIELDS=>$data
-            ]);
-        $json = curl_exec($ch);
-        curl_close($ch);
-    }else{
-        $data = http_build_query($data);
-        $context = stream_context_create([
-            'http'=>[
-                'method'=>'POST',
-                'header'=>'Content-Type:application/x-www-form-urlencoded',
-                'content'=>$data
-            ]
-        ]);
-        $json = file_get_contents($url, false, $context);
-    }
+    $json = sedot($url,$data);
     $array = json_decode($json,true);
     if($array['data']!=null){
         $data = $array['data'];
@@ -93,18 +74,12 @@ if(isset($argv[1])){
         $kitab = $list_kitab[$no_kitab];
         echo "{$putih}Nomor hadis: {$kuning}".implode(' ',$list_id[$no_kitab])."\n";
         $id = validasi_id($list_id[$no_kitab]);
-        $url = "http://api.carihadis.com/?kitab=$kitab&id=$id";
-            if(function_exists('curl_version')){
-                $ch = curl_init();
-                curl_setopt_array($ch,[
-                    CURLOPT_URL=>$url,
-                    CURLOPT_RETURNTRANSFER=>true
-                    ]);
-                $konten = curl_exec($ch);
-                curl_close($ch);
-            }else{
-                $konten = file_get_contents($url);
-            }
+        $url = "http://api.carihadis.com";
+        $data = [
+          "kitab" => $kitab,
+          "id" => $id
+        ];
+        $konten = sedot($url,$data);
             if($konten === false)exit($merah."Eror, coba cek koneksi internet anda\n");
             $json = json_decode($konten,true);
             $data = $json['data'];
@@ -188,6 +163,29 @@ if(isset($argv[1])){
     ");
 }
 
+function sedot($url,$data){
+  if(function_exists('curl_version')){
+    $ch = curl_init();
+    curl_setopt_array($ch,[
+      CURLOPT_URL=>$url,
+      CURLOPT_RETURNTRANSFER=>true,
+      CURLOPT_POSTFIELDS=>$data
+      ]);
+    $json = curl_exec($ch);
+    curl_close($ch);
+  }else{
+    $data = http_build_query($data);
+    $context = stream_context_create([
+      'http'=>[
+      'method'=>'POST',
+      'header'=>'Content-Type:application/x-www-form-urlencoded',
+      'content'=>$data
+      ]
+    ]);
+    $json = file_get_contents($url, false, $context);
+  }
+  return $json;
+}
 function br2nl( $input ) {
     return preg_replace('/<br\s?\/?>|<p\s?([^\>]+)\>/ius', "\n", str_replace("\n\n","",str_replace("\r","", htmlspecialchars_decode($input))));
 }
@@ -200,7 +198,7 @@ function validasi_id($list_id){
         $id = validasi_id($list_id);
     }
     if(!in_array($id,$list_id)){
-        echo $merah."Pilih salah satu nomor di atas\n";
+        echo $merah."Pilih nomor yang tersedia\n";
         $id = validasi_id($list_id);
     }
     return $id;
@@ -208,7 +206,7 @@ function validasi_id($list_id){
 
 function validasi_no_kitab($jumlah_kitab){
     global $biru,$putih,$tampil_kitab,$merah;
-    $no_kitab = readline("{$putih}Tulis nomor kitab: ");
+    $no_kitab = readline("{$putih}Tulis nomor kitab [1-{$jumlah_kitab}]: ");
     if(!is_numeric($no_kitab)){
         echo $merah."Tulis angkanya\n";
         $no_kitab = validasi_no_kitab($jumlah_kitab);
