@@ -1,0 +1,10 @@
+#!/usr/bin/php
+<?php
+if(!isset($argv) or count($argv) < 5)exit(basename(__FILE__).' $user $repo $branch $file'.PHP_EOL);
+//unduh dannsbass botphp main data.txt
+//https://raw.githubusercontent.com/dannsbass/botphp/main/data.txt
+$user = $argv[1];
+$repo = $argv[2];
+$branch = $argv[3];
+$namafile = $argv[4];
+system("wget https://raw.githubusercontent.com/$user/$repo/$branch/$namafile");
