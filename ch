@@ -20,7 +20,7 @@ if(isset($argv[1])){
         #var_dump($cocok);
         $kitab = $cocok[1];
         $id = $cocok[2];
-        $url = "http://api.carihadis.com";
+        $url = "http://api2.carihadis.com";
         $data = [
           "kitab" => $kitab,
           "id" => $id
@@ -47,7 +47,7 @@ if(isset($argv[1])){
         $katakunci = $argv[1];
     }
     
-    $url = "http://api.carihadis.com";
+    $url = "http://api2.carihadis.com";
     $data = [
         'q'=>$katakunci
     ];
@@ -68,7 +68,7 @@ if(isset($argv[1])){
         $kitab = $list_kitab[$no_kitab];
         echo "{$putih}Nomor hadis: {$kuning}".implode(' ',$list_id[$no_kitab])."\n";
         $id = validasi_id($list_id[$no_kitab]);
-        $url = "http://api.carihadis.com";
+        $url = "http://api2.carihadis.com";
         $data = [
           "kitab" => $kitab,
           "id" => $id
