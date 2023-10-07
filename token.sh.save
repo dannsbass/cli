@@ -1,0 +1,10 @@
+#!/bin/bash
+
+for TOKEN in $*
+do
+	echo $TOKEN
+donNAME="Danns"
+readonly NAME
+NAME="Bass"
+echo $NAME
+e
